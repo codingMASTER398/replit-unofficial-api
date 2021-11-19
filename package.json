@@ -1,5 +1,5 @@
 {
-  "name": "replit_api",
+  "name": "replit-unofficial-api",
   "version": "1.0.0",
   "description": "A package to interact with various unofficial replit.com APIs.",
   "main": "index.js",
@@ -10,5 +10,10 @@
   "license": "MIT",
   "dependencies": {
     "node-fetch": "^2.0.0"
-  }
+  },
+  "keywords": ["replit","api","unofficial"],
+  "bugs": {
+    "url": "https://github.com/codingMASTER398/replit-unofficial-api/issues"
+  },
+  "homepage": "https://github.com/codingMASTER398/replit-unofficial-api"
 }
