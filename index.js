@@ -181,15 +181,11 @@ function replappsdata(app,all) {
                     }
                     if(all){
                         var repls = []
-                        for (let i = 0; i < r[0].data.tag.trendingReplsFeed.replIds.length; i++) {
-                            const element = r[0].data.tag.trendingReplsFeed.replIds[i];
-                            repls.push(element)
-                        }
                         var bodily = JSON.stringify([
                             {
                               "operationName": "ExploreRepls",
                               "variables": {
-                                "replIds": repls
+                                "replIds": r[0].data.tag.trendingReplsFeed.replIds
                               },
                               "query": "query ExploreRepls($replIds: [String!]!) {\n  publicReplsByIds(ids: $replIds) {\n    id\n    ...ExploreReplCardRepl\n    __typename\n  }\n}\n\nfragment ExploreReplCardRepl on Repl {\n  id\n  title\n  runCount\n  likeCount\n  imageUrl\n  url\n  description(plainText: true)\n  tags {\n    id\n    __typename\n  }\n  owner {\n    ... on User {\n      id\n      username\n      image\n      url\n      __typename\n    }\n    ... on Team {\n      id\n      username\n      image\n      url\n      __typename\n    }\n    __typename\n  }\n  multiplayers {\n    id\n    username\n    image\n    url\n    __typename\n  }\n  __typename\n}\n"
                             }
@@ -201,17 +197,20 @@ function replappsdata(app,all) {
                             "body": bodily,
                             "method": "POST",
                             "mode": "cors"
-                        }).then(async function response(r) {
-                            r = await r.json()
-                            console.log(r[0].data.publicReplsByIds)
-                            if(r[0].data && r[0].data.publicReplsByIds && r[0].data.publicReplsByIds.length !== 0){
-                                returncurrently.repls = r[0].data.publicReplsByIds
+                        }).then(async function response(o) {
+                            o = await o.json()
+                            if(o[0].data && o[0].data.publicReplsByIds && o[0].data.publicReplsByIds.length !== 0){
+                                var returncurrently = {
+                                    "app":r[0].data.tag.id,
+                                    "trending":r[0].data.tag.isTrending,
+                                    "replcount":r[0].data.tag.replCount,
+                                    "repls":o[0].data.publicReplsByIds
+                                }
                                 resolve(returncurrently)
                             }else{
                                 reject("there was an error while getting the repls. Maybe turn off 'all' mode.")
                             }
                         }).catch(function(err) {
-                            console.log(err)
                             resolve(returncurrently)
                         })
                     }else{

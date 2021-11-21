@@ -1,6 +1,6 @@
 # Setup
 ```js
-var replitapi = require("replit-unofficial-api");
+    var replitapi = require("replit-unofficial-api");
 ```
 
 # Current functions
